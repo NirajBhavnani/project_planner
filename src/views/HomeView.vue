@@ -2,7 +2,11 @@
   <div class="home">
     <div v-if="projects.length">
       <div v-for="project in projects" :key="project.id">
-        <SingleProject :project="project" />
+        <SingleProject
+          :project="project"
+          @delete="handleDelete"
+          @complete="handleComplete"
+        />
       </div>
     </div>
   </div>
@@ -26,6 +30,19 @@ export default {
       .then((res) => res.json()) //since fetch() is asynchronous so it will take some time and returns a promise, then we will parse the response json
       .then((data) => (this.projects = data)) //updating the projects array with the data array we get from the json-server
       .catch((err) => console.log(err.message));
+  },
+  methods: {
+    handleDelete(id) {
+      this.projects = this.projects.filter((project) => {
+        return project.id !== id; //if true: We keep the item in, false: we filter it out
+      });
+    },
+    handleComplete(id) {
+      let temp = this.projects.find((project) => {
+        return project.id === id; //if true: then store that project
+      });
+      temp.complete = !temp.complete;
+    },
   },
 };
 </script>

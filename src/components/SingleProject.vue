@@ -1,11 +1,15 @@
 <template>
-  <div class="project">
-    <div class="actions" @click="toggleDetails">
-      <h3>{{ project.title }}</h3>
+  <div class="project" :class="{ completed: project.complete }">
+    <div class="actions">
+      <h3 @click="toggleDetails">{{ project.title }}</h3>
       <div class="icons">
         <span class="material-icons"> edit_note </span>
-        <span class="material-icons"> delete_outline </span>
-        <span class="material-icons"> task_alt </span>
+        <span class="material-icons" @click="deleteProject">
+          delete_outline
+        </span>
+        <span class="material-icons tick" @click="toggleComplete">
+          task_alt
+        </span>
       </div>
     </div>
     <div class="details" v-if="showDetails">
@@ -20,11 +24,26 @@ export default {
   data() {
     return {
       showDetails: false,
+      uri: "http://localhost:3000/projects/" + this.project.id, //for reusability
     };
   },
   methods: {
     toggleDetails() {
       this.showDetails = !this.showDetails;
+    },
+    deleteProject() {
+      fetch(this.uri, { method: "DELETE" })
+        .then(() => this.$emit("delete", this.project.id)) //emitting an event to delete the data locally as well
+        .catch((err) => console.log(err));
+    },
+    toggleComplete() {
+      fetch(this.uri, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" }, //we are sending some data of type json
+        body: JSON.stringify({ complete: !this.project.complete }),
+      })
+        .then(() => this.$emit("complete", this.project.id))
+        .catch((err) => console.log(err));
     },
   },
 };
@@ -55,5 +74,11 @@ h3 {
 }
 .material-icons:hover {
   color: #777;
+}
+.project.completed {
+  border-left: 4px solid #00ce89;
+}
+.project.completed .tick {
+  color: #00ce89;
 }
 </style>
