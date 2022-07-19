@@ -32,6 +32,7 @@ export default {
       .catch((err) => console.log(err.message));
   },
   methods: {
+    //handleDelete and handleComplete are written to maintain the temp/display projects array with db array
     handleDelete(id) {
       this.projects = this.projects.filter((project) => {
         return project.id !== id; //if true: We keep the item in, false: we filter it out
