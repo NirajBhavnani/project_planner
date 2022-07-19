@@ -17,6 +17,12 @@
       "details": "VueJs",
       "complete": true,
       "id": 3
+    },
+    {
+      "title": "New project",
+      "details": "Lorem ipsum",
+      "complete": false,
+      "id": 4
     }
   ]
 }
