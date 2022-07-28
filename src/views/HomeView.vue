@@ -21,6 +21,8 @@ import SingleProject from "../components/SingleProject.vue";
 import FilterNav from "../components/FilterNav.vue";
 
 export default {
+  // Using OptionsAPI: data function, methods property, computed property and lifecycle hooks
+  // All of these are directly added to the component itself, which we export
   name: "HomeView",
   components: {
     SingleProject,
